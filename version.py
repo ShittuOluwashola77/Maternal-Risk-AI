@@ -1,0 +1,7 @@
+APP_NAME = "MaternalAI"
+
+VERSION = "1.0.0"
+
+AUTHOR = "SHITTU.O O."
+
+YEAR = "2026"
