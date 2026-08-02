@@ -1,4 +1,4 @@
- import streamlit as st
+import streamlit as st
 
 from version import APP_NAME, VERSION
 
