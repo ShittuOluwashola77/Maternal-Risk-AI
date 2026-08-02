@@ -7,15 +7,13 @@ from ai.grok_client import ask_grok
 from ai.prompts import build_prediction_prompt
 
 
-# ============================================
-# Initialize Session State
-# ============================================
-
-if "prediction_history" not in st.session_state:
-    st.session_state["prediction_history"] = []
-
-
 def show_risk_assessment():
+
+    # ============================================
+    # Initialize Session State
+    # ============================================
+
+    history = st.session_state.setdefault("prediction_history", [])
 
     st.title("🩺 Maternal Risk Assessment")
 
@@ -49,7 +47,6 @@ def show_risk_assessment():
     col1, col2 = st.columns(2)
 
     with col1:
-
         systolic = st.number_input(
             "Systolic Blood Pressure (mmHg)",
             min_value=70,
@@ -58,7 +55,6 @@ def show_risk_assessment():
         )
 
     with col2:
-
         diastolic = st.number_input(
             "Diastolic Blood Pressure (mmHg)",
             min_value=40,
@@ -77,7 +73,6 @@ def show_risk_assessment():
     col3, col4, col5 = st.columns(3)
 
     with col3:
-
         blood_sugar = st.number_input(
             "Blood Sugar (mmol/L)",
             min_value=2.0,
@@ -86,7 +81,6 @@ def show_risk_assessment():
         )
 
     with col4:
-
         body_temp = st.number_input(
             "Body Temperature (°F)",
             min_value=95.0,
@@ -95,7 +89,6 @@ def show_risk_assessment():
         )
 
     with col5:
-
         heart_rate = st.number_input(
             "Heart Rate (bpm)",
             min_value=40,
@@ -121,20 +114,26 @@ def show_risk_assessment():
         # Make Prediction
         # ============================================
 
-        risk, confidence, probabilities = predict_risk(
-            age,
-            systolic,
-            diastolic,
-            blood_sugar,
-            body_temp,
-            heart_rate
-        )
+        try:
+            risk, confidence, probabilities = predict_risk(
+                age,
+                systolic,
+                diastolic,
+                blood_sugar,
+                body_temp,
+                heart_rate
+            )
+
+        except Exception as e:
+            st.error("Prediction failed.")
+            st.exception(e)
+            st.stop()
 
         # ============================================
         # Save Prediction History
         # ============================================
 
-        st.session_state["prediction_history"].append(
+        history.append(
             {
                 "Time": datetime.now().strftime("%H:%M:%S"),
                 "Risk Level": risk,
@@ -145,10 +144,6 @@ def show_risk_assessment():
         st.divider()
 
         st.subheader("📋 Prediction Result")
-
-        # ============================================
-        # Professional Result Card
-        # ============================================
 
         if risk.lower() == "low risk":
 
@@ -191,10 +186,6 @@ def show_risk_assessment():
             unsafe_allow_html=True
         )
 
-        # ============================================
-        # Confidence Progress Bar
-        # ============================================
-
         st.progress(float(confidence))
 
         st.toast("✅ Prediction completed successfully!")
@@ -218,11 +209,22 @@ def show_risk_assessment():
         # AI Explanation
         # ============================================
 
-        with st.spinner(
-            "🧠 MaternalAI is analysing the patient's clinical information..."
-        ):
+        try:
 
-            explanation = ask_grok(prompt)
+            with st.spinner(
+                "🧠 MaternalAI is analysing the patient's clinical information..."
+            ):
+
+                explanation = ask_grok(prompt)
+
+        except Exception as e:
+
+            st.error("AI explanation failed.")
+            st.exception(e)
+
+            explanation = (
+                "AI explanation is currently unavailable."
+            )
 
         st.divider()
 
@@ -248,11 +250,9 @@ def show_risk_assessment():
 
     st.subheader("📋 Prediction History")
 
-    if len(st.session_state["prediction_history"]) > 0:
+    if history:
 
-        history_df = pd.DataFrame(
-            st.session_state["prediction_history"]
-        )
+        history_df = pd.DataFrame(history)
 
         st.dataframe(
             history_df,
@@ -271,7 +271,7 @@ def show_risk_assessment():
 
     if st.button("🗑 Clear Prediction History"):
 
-        st.session_state["prediction_history"] = []
+        history.clear()
 
         st.success(
             "Prediction history cleared successfully."
