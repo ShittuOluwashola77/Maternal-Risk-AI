@@ -2,36 +2,72 @@
    MATERNAL AI THEME
 =========================== */
 
-/* Hide Streamlit Branding */
+/* Hide Streamlit Menu */
 
 #MainMenu {
     visibility: hidden;
 }
 
+/* Hide Footer */
+
 footer {
     visibility: hidden;
 }
 
+/* =====================================
+   HEADER
+===================================== */
+
+/* Desktop */
+
+@media (min-width: 769px) {
+
 header {
+
     visibility: hidden;
+
+}
+
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+header {
+
+    visibility: visible;
+
+}
+
 }
 
 
-/* Background */
+/* =====================================
+   Background
+===================================== */
 
 .stApp{
+
     background-color:#F8FAFC;
+
 }
 
 
-/* Sidebar */
+/* =====================================
+   Sidebar
+===================================== */
 
 section[data-testid="stSidebar"]{
+
     background-color:#FFFFFF;
+
 }
 
 
-/* Buttons */
+/* =====================================
+   Buttons
+===================================== */
 
 .stButton>button{
 
@@ -53,7 +89,6 @@ section[data-testid="stSidebar"]{
 
 }
 
-
 .stButton>button:hover{
 
     background:#1D4ED8;
@@ -61,7 +96,9 @@ section[data-testid="stSidebar"]{
 }
 
 
-/* Metrics */
+/* =====================================
+   Metric Cards
+===================================== */
 
 [data-testid="stMetric"]{
 
@@ -71,12 +108,14 @@ section[data-testid="stSidebar"]{
 
     padding:20px;
 
-    box-shadow:0px 4px 10px rgba(0,0,0,0.08);
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
 
 }
 
 
-/* Text Input */
+/* =====================================
+   Inputs
+===================================== */
 
 input{
 
@@ -85,7 +124,9 @@ input{
 }
 
 
-/* Dataframe */
+/* =====================================
+   DataFrame
+===================================== */
 
 [data-testid="stDataFrame"]{
 
