@@ -108,7 +108,7 @@ with st.sidebar.expander(
 ### AI Assistant
 
 - Groq API
-- llama-3.1-8b-instant
+- openai/gpt-oss-20b
 
 ### Framework
 
