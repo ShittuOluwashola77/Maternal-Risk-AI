@@ -108,7 +108,7 @@ with st.sidebar.expander(
 ### AI Assistant
 
 - Groq API
-- Llama 3.3 70B Versatile
+- llama-3.1-8b-instant
 
 ### Framework
 
